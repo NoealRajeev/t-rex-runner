@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bichootyy's Dino Runner</title>
+    <meta
+      name="description"
+      content="A custom Chrome T-Rex Dino Runner game by Noeal Rajeev T., featuring the bichootyy skin with custom audio."
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Landing page styles ────────────────────────── */
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        font-family: "Open Sans", sans-serif;
+        color: #e0e0e0;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        width: 100%;
+        padding: 40px 20px 10px;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(90deg, #e94560, #f5a623);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 6px;
+      }
+
+      header p.subtitle {
+        font-size: 0.95rem;
+        color: #aaa;
+        margin: 0;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+        max-width: 700px;
+        box-sizing: border-box;
+      }
+
+      .choose-label {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: #888;
+        margin-bottom: 28px;
+      }
+
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+        width: 100%;
+      }
+
+      .card {
+        width: 170px;
+        text-align: center;
+        border: 2px solid rgba(233, 69, 96, 0.35);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
+        cursor: pointer;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 16px 40px rgba(233, 69, 96, 0.3);
+        border-color: #e94560;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .card-title {
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 12px 0 14px;
+        color: #f5f5f5;
+      }
+
+      /* ── Credits section ────────────────────────────── */
+      .credits {
+        margin-top: 50px;
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 28px;
+        color: #666;
+        font-size: 0.82rem;
+        line-height: 1.8;
+      }
+
+      .credits strong {
+        color: #aaa;
+      }
+
+      .credits a {
+        color: #e94560;
+        text-decoration: none;
+      }
+
+      .credits a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>bichootyy's Dino Runner</h1>
+      <p class="subtitle">Choose your character and start running!</p>
+    </header>
+
+    <main>
+      <p class="choose-label">Choose your character</p>
+      <div class="card-container">
+        <div
+          class="card"
+          id="card-bichootyy"
+          onclick="selectOption('bichootyy')"
+        >
+          <img
+            src="assets/WhatsApp Image 2026-04-13 at 1.37.01 PM.jpeg"
+            alt="bichootyy character"
+            class="card-image"
+          />
+          <h2 class="card-title">bichootyy</h2>
+        </div>
+      </div>
+
+      <!-- Credits -->
+      <div class="credits">
+        <p>
+          Based on the Chrome offline T-Rex Runner game.<br />
+          Original engine:
+          <a
+            href="https://chromium.googlesource.com/chromium/src/"
+            target="_blank"
+            rel="noopener"
+            >Chromium</a
+          >
+          &mdash; extracted by
+          <a href="https://github.com/liuwayong" target="_blank" rel="noopener"
+            >@liuwayong</a
+          ><br />
+          Custom skins, audio &amp; modifications &copy; 2026 Noeal Rajeev T.
+        </p>
+      </div>
+    </main>
+
+    <script>
+      function selectOption(option) {
+        window.location.href = "game.html?option=" + encodeURIComponent(option);
+      }
+    </script>
+  </body>
+</html>
