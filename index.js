@@ -20,6 +20,29 @@
     _biJumpEl.preload = "auto";
     _biOutEl = new Audio("assets/audio/out.ogg");
     _biOutEl.preload = "auto";
+
+    // ── Mobile warmup ────────────────────────────────────────────────────────
+    // Mobile browsers ignore preload="auto" and decode audio on-demand,
+    // causing ~200ms lag on the first play(). Fix: on the very first touch,
+    // silently play+pause to force decode+buffer. All real plays after
+    // this are instant because the decoded PCM is already in memory.
+    document.addEventListener("touchstart", function _biWarmup() {
+      document.removeEventListener("touchstart", _biWarmup); // run once only
+      if (!_biJumpEl) return;
+      _biJumpEl.volume = 0;
+      var wp = _biJumpEl.play();
+      var restore = function () {
+        _biJumpEl.pause();
+        _biJumpEl.currentTime = 0;
+        _biJumpEl.volume = 1;
+      };
+      if (wp && typeof wp.then === "function") {
+        wp.then(restore).catch(function () { _biJumpEl.volume = 1; });
+      } else {
+        restore();
+      }
+    }, { passive: true });
+    // ────────────────────────────────────────────────────────────────────────
   }
 
   /** Play jump sound: first 1.35 seconds of play.ogg. */
