@@ -9,8 +9,8 @@
   var BICHOOTYY_MODE =
     new URLSearchParams(window.location.search).get("option") === "bichootyy";
 
-  var _biJumpEl    = null; // HTMLAudioElement for jump sound
-  var _biOutEl     = null; // HTMLAudioElement for game-over sound
+  var _biJumpEl = null; // HTMLAudioElement for jump sound
+  var _biOutEl = null; // HTMLAudioElement for game-over sound
   var _biJumpTimer = null; // tracks the pending pause timeout for jump audio
 
   if (BICHOOTYY_MODE) {
@@ -26,22 +26,28 @@
     // causing ~200ms lag on the first play(). Fix: on the very first touch,
     // silently play+pause to force decode+buffer. All real plays after
     // this are instant because the decoded PCM is already in memory.
-    document.addEventListener("touchstart", function _biWarmup() {
-      document.removeEventListener("touchstart", _biWarmup); // run once only
-      if (!_biJumpEl) return;
-      _biJumpEl.volume = 0;
-      var wp = _biJumpEl.play();
-      var restore = function () {
-        _biJumpEl.pause();
-        _biJumpEl.currentTime = 0;
-        _biJumpEl.volume = 1;
-      };
-      if (wp && typeof wp.then === "function") {
-        wp.then(restore).catch(function () { _biJumpEl.volume = 1; });
-      } else {
-        restore();
-      }
-    }, { passive: true });
+    document.addEventListener(
+      "touchstart",
+      function _biWarmup() {
+        document.removeEventListener("touchstart", _biWarmup); // run once only
+        if (!_biJumpEl) return;
+        _biJumpEl.volume = 0;
+        var wp = _biJumpEl.play();
+        var restore = function () {
+          _biJumpEl.pause();
+          _biJumpEl.currentTime = 0;
+          _biJumpEl.volume = 1;
+        };
+        if (wp && typeof wp.then === "function") {
+          wp.then(restore).catch(function () {
+            _biJumpEl.volume = 1;
+          });
+        } else {
+          restore();
+        }
+      },
+      { passive: true },
+    );
     // ────────────────────────────────────────────────────────────────────────
   }
 
@@ -73,6 +79,76 @@
     _biOutEl.pause();
     _biOutEl.currentTime = 0;
     var p = _biOutEl.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(function () {});
+    }
+  }
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // ── shaju custom audio ────────────────────────────────────────────────────
+  var SHAJU_MODE =
+    new URLSearchParams(window.location.search).get("option") === "shaju";
+
+  var _shJumpEl = null; // HTMLAudioElement for shaju jump sound
+  var _shOutEl = null; // HTMLAudioElement for shaju game-over sound
+  var _shJumpTimer = null; // pending pause timeout for shaju jump audio
+
+  if (SHAJU_MODE) {
+    _shJumpEl = new Audio("assets/audio/shaju_play.ogg");
+    _shJumpEl.preload = "auto";
+    _shOutEl = new Audio("assets/audio/shaju_out.ogg");
+    _shOutEl.preload = "auto";
+
+    // Mobile warmup: force decode+buffer on first touch to eliminate lag.
+    document.addEventListener(
+      "touchstart",
+      function _shWarmup() {
+        document.removeEventListener("touchstart", _shWarmup);
+        if (!_shJumpEl) return;
+        _shJumpEl.volume = 0;
+        var wp = _shJumpEl.play();
+        var restore = function () {
+          _shJumpEl.pause();
+          _shJumpEl.currentTime = 0;
+          _shJumpEl.volume = 1;
+        };
+        if (wp && typeof wp.then === "function") {
+          wp.then(restore).catch(function () {
+            _shJumpEl.volume = 1;
+          });
+        } else {
+          restore();
+        }
+      },
+      { passive: true },
+    );
+  }
+
+  /** Play shaju jump sound: first 1.35 seconds of shaju_play.ogg. */
+  function _shPlayJump() {
+    if (!_shJumpEl) return;
+    if (_shJumpTimer !== null) {
+      clearTimeout(_shJumpTimer);
+      _shJumpTimer = null;
+    }
+    _shJumpEl.pause();
+    _shJumpEl.currentTime = 0;
+    var p = _shJumpEl.play();
+    _shJumpTimer = setTimeout(function () {
+      _shJumpEl.pause();
+      _shJumpTimer = null;
+    }, 2000);
+    if (p && typeof p.catch === "function") {
+      p.catch(function () {});
+    }
+  }
+
+  /** Play shaju game-over sound: shaju_out.ogg in full. */
+  function _shPlayOut() {
+    if (!_shOutEl) return;
+    _shOutEl.pause();
+    _shOutEl.currentTime = 0;
+    var p = _shOutEl.play();
     if (p && typeof p.catch === "function") {
       p.catch(function () {});
     }
@@ -820,6 +896,8 @@
           if (!this.tRex.jumping && !this.tRex.ducking) {
             if (BICHOOTYY_MODE) {
               _biPlayJump();
+            } else if (SHAJU_MODE) {
+              _shPlayJump();
             } else {
               this.playSound(this.soundFx.BUTTON_PRESS);
             }
@@ -922,6 +1000,8 @@
     gameOver: function () {
       if (BICHOOTYY_MODE) {
         _biPlayOut();
+      } else if (SHAJU_MODE) {
+        _shPlayOut();
       } else {
         this.playSound(this.soundFx.HIT);
       }
