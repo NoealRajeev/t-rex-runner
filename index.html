@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bichootyy's Dino Runner</title>
+    <title>Dino Runner — Choose Your Character</title>
     <meta
       name="description"
-      content="A custom Chrome T-Rex Dino Runner game by Noeal Rajeev T., featuring the bichootyy skin with custom audio."
+      content="A custom Chrome T-Rex Dino Runner by Noeal Rajeev T. — choose your character and run!"
     />
     <link rel="stylesheet" href="index.css" />
     <link
@@ -148,24 +148,31 @@
   </head>
   <body>
     <header>
-      <h1>bichootyy's Dino Runner</h1>
+      <h1>Dino Runner</h1>
       <p class="subtitle">Choose your character and start running!</p>
     </header>
 
     <main>
       <p class="choose-label">Choose your character</p>
       <div class="card-container">
-        <div
-          class="card"
-          id="card-bichootyy"
-          onclick="selectOption('bichootyy')"
-        >
+        <!-- bichootyy -->
+        <div class="card" id="card-bichootyy" onclick="selectOption('bichootyy')">
           <img
             src="assets/WhatsApp Image 2026-04-13 at 1.37.01 PM.jpeg"
             alt="bichootyy character"
             class="card-image"
           />
           <h2 class="card-title">bichootyy</h2>
+        </div>
+
+        <!-- shaju -->
+        <div class="card" id="card-shaju" onclick="selectOption('shaju')">
+          <img
+            src="assets/shaju.jpeg"
+            alt="shaju character"
+            class="card-image"
+          />
+          <h2 class="card-title">shaju</h2>
         </div>
       </div>
 
